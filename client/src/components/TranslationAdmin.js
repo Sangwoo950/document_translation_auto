@@ -2,7 +2,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
-// ToggleSwitch 컴포넌트 (동그란 토글 스위치)
+// 환경 변수에서 API 기본 URL 읽어오기
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+
 const ToggleSwitch = ({ isOn, handleToggle }) => {
   return (
     <label className='relative inline-block w-12 h-6 cursor-pointer'>
@@ -50,8 +52,9 @@ const TranslationAdmin = () => {
     setLoading(true);
     setLogs((prev) => [...prev, `문서 ${docIdInput} 불러오는 중...`]);
     try {
+      // API_BASE_URL 사용
       const res = await axios.get(
-        `http://localhost:3000/document?articleId=${docIdInput}`
+        `${API_BASE_URL}/document?articleId=${docIdInput}`
       );
       setDocument({ ...res.data, translationSaved: false });
       setLogs((prev) => [...prev, `문서 ${docIdInput} 불러오기 완료`]);
@@ -73,7 +76,7 @@ const TranslationAdmin = () => {
     setLogs((prev) => [...prev, `문서 ${document.id} 번역 요청 중...`]);
     try {
       const res = await axios.get(
-        `http://localhost:3000/translate/preview?articleId=${document.id}`
+        `${API_BASE_URL}/translate/preview?articleId=${document.id}`
       );
       setDocument((prev) =>
         prev
@@ -102,7 +105,7 @@ const TranslationAdmin = () => {
     setLoading(true);
     setLogs((prev) => [...prev, `문서 ${document.id} 번역 저장 요청 중...`]);
     try {
-      await axios.post('http://localhost:3000/translate/confirm', {
+      await axios.post(`${API_BASE_URL}/translate/confirm`, {
         articleId: document.id,
         translatedText: document.enBody,
         translatedTitle: document.enTitle,
