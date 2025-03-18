@@ -2,9 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
-// 환경 변수에서 API 기본 URL 읽어오기
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-
+// ToggleSwitch 컴포넌트 (동그란 토글 스위치)
 const ToggleSwitch = ({ isOn, handleToggle }) => {
   return (
     <label className='relative inline-block w-12 h-6 cursor-pointer'>
@@ -28,6 +26,10 @@ const ToggleSwitch = ({ isOn, handleToggle }) => {
   );
 };
 
+// 환경 변수에서 API 기본 URL 읽어오기
+
+const API_BASE_URL = 'http://localhost:3000' || process.env.REACT_APP_API_URL;
+
 const TranslationAdmin = () => {
   const [document, setDocument] = useState(null);
   const [docIdInput, setDocIdInput] = useState('');
@@ -43,7 +45,7 @@ const TranslationAdmin = () => {
     }
   }, [logs]);
 
-  // 단일 문서 조회: /document 엔드포인트 호출
+  // 단일 문서 조회
   const fetchDocumentById = async () => {
     if (!docIdInput) {
       setLogs((prev) => [...prev, '문서 ID를 입력하세요.']);
@@ -52,7 +54,6 @@ const TranslationAdmin = () => {
     setLoading(true);
     setLogs((prev) => [...prev, `문서 ${docIdInput} 불러오는 중...`]);
     try {
-      // API_BASE_URL 사용
       const res = await axios.get(
         `${API_BASE_URL}/document?articleId=${docIdInput}`
       );
@@ -69,7 +70,7 @@ const TranslationAdmin = () => {
     setLoading(false);
   };
 
-  // 번역하기: /translate/preview 호출하여 번역된 제목과 본문 받아오기
+  // 번역하기
   const translateDocument = async () => {
     if (!document) return;
     setLoading(true);
@@ -99,7 +100,7 @@ const TranslationAdmin = () => {
     setLoading(false);
   };
 
-  // 번역 저장하기: /translate/confirm 호출 (저장 후 버튼 레이블 변경)
+  // 번역 저장하기
   const saveTranslation = async () => {
     if (!document || !document.enBody || !document.enTitle) return;
     setLoading(true);
@@ -131,7 +132,7 @@ const TranslationAdmin = () => {
       <header className='bg-white shadow'>
         <div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center'>
           <h1 className='text-3xl font-bold text-gray-800'>
-            Zendesk 문서 번역기 1.45v
+            Zendesk 문서 번역기 1.4v
           </h1>
           <div className='flex flex-col items-end'>
             <h4 className='font-bold mt-1 self-start'>상태 로그</h4>
