@@ -129,11 +129,15 @@ const TranslationAdmin = () => {
   return (
     <div className='min-h-screen bg-gray-50'>
       {/* Header */}
-      <header className='bg-white shadow'>
+      <header className='bg-[#4BD8D0] shadow'>
         <div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center'>
           <h1 className='text-3xl font-bold text-gray-800'>
-            Zendesk 문서 번역기 1.4v
+            Zendesk 언어 번역기
+            <spq className=''>
+              <span style={{ fontSize: '1.2rem' }}> 1.4v</span>
+            </spq>
           </h1>
+          <img className='h-40  ml-auto' src='/chil.png' alt='이미지 없음' />
           <div className='flex flex-col items-end'>
             <h4 className='font-bold mt-1 self-start'>상태 로그</h4>
             <div

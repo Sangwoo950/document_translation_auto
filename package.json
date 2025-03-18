@@ -1,0 +1,13 @@
+{
+  "name": "document_translation_auto",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "start": "npm workspace client start",
+    "build": "npm workspace client build",
+    "server": "npm workspace server run start"
+  }
+}
