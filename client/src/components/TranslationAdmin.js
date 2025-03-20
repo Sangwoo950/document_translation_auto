@@ -54,14 +54,18 @@ const TranslationAdmin = () => {
       return;
     }
     setLoading(true);
-    setLogs((prev) => [...prev, `문서 ${docIdInput} 불러오는 중...`]);
+    const url = getApiUrl(`/document?articleId=${docIdInput}`);
+    setLogs((prev) => [
+      ...prev,
+      `문서 ${docIdInput} 불러오는 중... URL: ${url}`,
+    ]);
     try {
-      const res = await axios.get(
-        getApiUrl(`/document?articleId=${docIdInput}`)
-      );
+      const res = await axios.get(url);
+      console.log('Document data:', res.data);
       setDocument({ ...res.data, translationSaved: false });
       setLogs((prev) => [...prev, `문서 ${docIdInput} 불러오기 완료`]);
     } catch (error) {
+      console.error('Fetch error:', error);
       setLogs((prev) => [
         ...prev,
         `문서 ${docIdInput} 불러오기 실패: ${
