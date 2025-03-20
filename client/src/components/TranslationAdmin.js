@@ -27,7 +27,7 @@ const ToggleSwitch = ({ isOn, handleToggle }) => {
 };
 
 // 환경 변수에서 API 기본 URL 읽어오기
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 // 헬퍼 함수: trailing slash 제거 후 경로 결합
 const getApiUrl = (path) => `${API_BASE_URL.replace(/\/$/, '')}${path}`;
