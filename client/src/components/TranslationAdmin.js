@@ -28,7 +28,7 @@ const ToggleSwitch = ({ isOn, handleToggle }) => {
 
 // 환경 변수에서 API 기본 URL 읽어오기
 
-const API_BASE_URL = 'http://localhost:3000' || process.env.REACT_APP_API_URL;
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
 const TranslationAdmin = () => {
   const [document, setDocument] = useState(null);
