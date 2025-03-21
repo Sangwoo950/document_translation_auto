@@ -28,8 +28,7 @@ const ToggleSwitch = ({ isOn, handleToggle }) => {
 
 // REST API 호출을 중앙화한 헬퍼 객체
 const api = {
-  getDocument: (articleId) =>
-    axios.get(`http://localhost:3000/document?articleId=${articleId}`),
+  getDocument: (articleId) => axios.get(`/document?articleId=${articleId}`),
   translateDocument: (articleId) =>
     axios.get(`/translate/preview?articleId=${articleId}`),
   saveTranslation: (articleId, translatedText, translatedTitle) =>
