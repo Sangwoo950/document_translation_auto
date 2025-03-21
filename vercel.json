@@ -8,7 +8,7 @@
       }
     },
     {
-      "src": "server/server.js",
+      "src": "api/server.js",
       "use": "@vercel/node"
     }
   ],
@@ -19,7 +19,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "client/build/$1"
+      "dest": "/client/build/$1"
     }
   ]
 }

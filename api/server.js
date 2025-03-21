@@ -37,6 +37,7 @@ const searchDocuments = async (query) => {
   }
 };
 
+// 모든 문서 가져오기
 app.get('/documents', async (req, res) => {
   const { query } = req.query;
   if (!query)
@@ -57,6 +58,7 @@ app.get('/documents', async (req, res) => {
   }
 });
 
+// 단일 문서 가져오기
 app.get('/document', async (req, res) => {
   const { articleId } = req.query;
   if (!articleId)
@@ -79,6 +81,7 @@ app.get('/document', async (req, res) => {
   }
 });
 
+// 번역 미리보기
 const translateText = async (text) => {
   const url = `https://translation.googleapis.com/language/translate/v2?key=${GOOGLE_TRANSLATE_API_KEY}`;
   const postData = { q: text, target: 'en', format: 'text' };
@@ -116,6 +119,7 @@ app.get('/translate/preview', async (req, res) => {
   }
 });
 
+// 업로드(번역 확정)
 const addTranslation = async (articleId, translatedBody, translatedTitle) => {
   const url = `https://${ZENDESK_SUBDOMAIN}.zendesk.com/api/v2/help_center/articles/${articleId}/translations.json`;
   const postData = {
@@ -143,16 +147,16 @@ const addTranslation = async (articleId, translatedBody, translatedTitle) => {
 };
 
 app.post('/translate/confirm', async (req, res) => {
-  const { articleId, translatedText, translatedTitle } = req.body;
-  if (!articleId || !translatedText || !translatedTitle) {
+  const { articleId, translatedBody, translatedTitle } = req.body;
+  if (!articleId || !translatedBody || !translatedTitle) {
     return res.status(400).json({
-      error: 'articleId, translatedText, and translatedTitle are required',
+      error: 'articleId, translatedBody, and translatedTitle are required',
     });
   }
   try {
     const result = await addTranslation(
       articleId,
-      translatedText,
+      translatedBody,
       translatedTitle
     );
     res.json(result);

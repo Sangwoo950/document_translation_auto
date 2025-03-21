@@ -26,11 +26,19 @@ const ToggleSwitch = ({ isOn, handleToggle }) => {
   );
 };
 
-// 환경 변수에서 API 기본 URL 읽어오기
-const API_BASE_URL = process.env.REACT_APP_API_URL;
-
-// 헬퍼 함수: trailing slash 제거 후 경로 결합
-const getApiUrl = (path) => `${API_BASE_URL.replace(/\/$/, '')}${path}`;
+// REST API 호출을 중앙화한 헬퍼 객체
+const api = {
+  getDocument: (articleId) =>
+    axios.get(`http://localhost:3000/document?articleId=${articleId}`),
+  translateDocument: (articleId) =>
+    axios.get(`/translate/preview?articleId=${articleId}`),
+  saveTranslation: (articleId, translatedText, translatedTitle) =>
+    axios.post(`/translate/confirm`, {
+      articleId,
+      translatedText,
+      translatedTitle,
+    }),
+};
 
 const TranslationAdmin = () => {
   const [document, setDocument] = useState(null);
@@ -54,18 +62,13 @@ const TranslationAdmin = () => {
       return;
     }
     setLoading(true);
-    const url = getApiUrl(`/document?articleId=${docIdInput}`);
-    setLogs((prev) => [
-      ...prev,
-      `문서 ${docIdInput} 불러오는 중... URL: ${url}`,
-    ]);
+    setLogs((prev) => [...prev, `문서 ${docIdInput} 불러오는 중...`]);
     try {
-      const res = await axios.get(url);
+      const res = await api.getDocument(docIdInput);
       console.log('Document data:', res.data);
       setDocument({ ...res.data, translationSaved: false });
       setLogs((prev) => [...prev, `문서 ${docIdInput} 불러오기 완료`]);
     } catch (error) {
-      console.error('Fetch error:', error);
       setLogs((prev) => [
         ...prev,
         `문서 ${docIdInput} 불러오기 실패: ${
@@ -82,9 +85,7 @@ const TranslationAdmin = () => {
     setLoading(true);
     setLogs((prev) => [...prev, `문서 ${document.id} 번역 요청 중...`]);
     try {
-      const res = await axios.get(
-        getApiUrl(`/translate/preview?articleId=${document.id}`)
-      );
+      const res = await api.translateDocument(document.id);
       setDocument((prev) =>
         prev
           ? {
@@ -112,11 +113,7 @@ const TranslationAdmin = () => {
     setLoading(true);
     setLogs((prev) => [...prev, `문서 ${document.id} 번역 저장 요청 중...`]);
     try {
-      await axios.post(getApiUrl('/translate/confirm'), {
-        articleId: document.id,
-        translatedText: document.enBody,
-        translatedTitle: document.enTitle,
-      });
+      await api.saveTranslation(document.id, document.enBody, document.enTitle);
       setDocument((prev) =>
         prev ? { ...prev, translationSaved: true } : null
       );
@@ -139,11 +136,9 @@ const TranslationAdmin = () => {
         <div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center'>
           <h1 className='text-3xl font-bold text-gray-800'>
             Zendesk 언어 번역기
-            <spq className=''>
-              <span style={{ fontSize: '1.2rem' }}> 1.4v</span>
-            </spq>
+            <span style={{ fontSize: '1.2rem' }}> 1.4v</span>
           </h1>
-          <img className='h-40  ml-auto' src='/chil.png' alt='이미지 없음' />
+          <img className='h-40 ml-auto' src='/chil.png' alt='이미지 없음' />
           <div className='flex flex-col items-end'>
             <h4 className='font-bold mt-1 self-start'>상태 로그</h4>
             <div
