@@ -20,6 +20,5 @@
       "dest": "/client/build/$1"
     }
   ],
-  "rootDirectory": "client",
   "devCommand": "npm run start"
 }
