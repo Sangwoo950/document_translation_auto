@@ -1,13 +1,16 @@
 {
   "name": "document_translation_auto",
+  "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "client",
-    "server"
-  ],
   "scripts": {
-    "start": "npm workspace client start",
-    "build": "npm workspace client build",
-    "server": "npm workspace server run start"
-  }
+    "start": "npm run start:client",
+    "start:client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "server": "cd api && npm run start"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=10.7.0"
+  },
+  "proxy": "http://localhost:3001"
 }
