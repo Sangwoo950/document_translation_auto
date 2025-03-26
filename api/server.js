@@ -10,8 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 // 라우트 등록: API 경로에 /api 프리픽스를 붙이면 Vercel 라우팅과 맞출 수 있음
-app.use('/api', documentRoutes);
-app.use('/api', translationRoutes);
+app.use(documentRoutes);
+app.use(translationRoutes);
 
 // 환경 변수에서 PORT를 참조하고, 값이 없으면 3001로 기본 설정
 const port = process.env.PORT || 3001;
