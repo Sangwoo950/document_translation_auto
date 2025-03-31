@@ -1,7 +1,7 @@
-// controllers/documentController.js
 const zendeskService = require('../services/zendeskService');
 
 const getSingleDocument = async (req, res) => {
+  console.log('getSingleDocument 호출됨. articleId:', req.query.articleId);
   const { articleId } = req.query;
   if (!articleId) {
     return res.status(400).json({ error: 'articleId parameter is required' });
