@@ -1,4 +1,3 @@
-// client/src/components/TranslationAdmin.js
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
@@ -28,12 +27,13 @@ const ToggleSwitch = ({ isOn, handleToggle }) => {
 
 // REST API 호출을 중앙화한 헬퍼 객체
 const api = {
-  // 변경 후
+  // 기존 document endpoint는 그대로 유지
   getDocument: (articleId) => axios.get(`/api/document?articleId=${articleId}`),
+  // 수정: '/api' 접두사를 붙여 요청
   translateDocument: (articleId) =>
-    axios.get(`/translate/preview?articleId=${articleId}`),
+    axios.get(`/api/preview?articleId=${articleId}`),
   saveTranslation: (articleId, translatedText, translatedTitle) =>
-    axios.post(`/translate/confirm`, {
+    axios.post(`/api/confirm`, {
       articleId,
       translatedText,
       translatedTitle,
